@@ -37,29 +37,31 @@
 <body>
     <!-- <canvas id="canvas" class="potrait" width="360" height="640"></canvas> -->
     <canvas id="canvas" class="potrait"></canvas>
-    <script src="/js/main.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/js/scene1.js"></script>
     <script>
-        var stage = new createjs.Stage("canvas");
+        // var stage = new createjs.Stage("canvas");
 
-        stage.scene = {
-            main: undefined,
-            update: undefined,
-            destroy: undefined,
-            objects: {}
-        };
+        // stage.scene = {
+        //     main: undefined,
+        //     update: undefined,
+        //     destroy: undefined,
+        //     objects: {}
+        // };
 
-        createjs.Ticker.addEventListener("tick", handleTick);
-        function handleTick(e){
-            console.log({e})
-            stage.canvas.width = stage.canvas.clientWidth;
-            stage.canvas.height = stage.canvas.clientHeight;
+        // createjs.Ticker.addEventListener("tick", handleTick);
+        // function handleTick(e){
+        //     console.log({e})
+        //     stage.canvas.width = stage.canvas.clientWidth;
+        //     stage.canvas.height = stage.canvas.clientHeight;
 
-            if(typeof stage.scene.update == 'function') stage.scene.update({stage});
+        //     if(typeof stage.scene.update == 'function') stage.scene.update({stage});
 
-            stage.update();
-        }
+        //     stage.update();
+        // }
 
-        scene1({stage});
+        // scene1();
+        var stage = Scene1.init();
     </script>
 </body>
 </html>
