@@ -8,6 +8,10 @@
 
     <link rel="stylesheet" href="https://unpkg.com/normalize.css@8.0.1/normalize.css">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+
     <style>
         html{
             width: 100%;
@@ -20,15 +24,12 @@
             overflow: hidden;
             display: flex;
             justify-content: center;
-
+            /* font-family: 'Comic Neue', cursive; */
         }
         canvas.potrait{
             height: 100vh;
             width: 100%;
             max-width: calc(100vh * 360 / 640);
-            /* height: 640px;
-            width: 360px; */
-            background: white;
         }
     </style>
 
@@ -40,28 +41,6 @@
     <script src="/js/utils.js"></script>
     <script src="/js/scene1.js"></script>
     <script>
-        // var stage = new createjs.Stage("canvas");
-
-        // stage.scene = {
-        //     main: undefined,
-        //     update: undefined,
-        //     destroy: undefined,
-        //     objects: {}
-        // };
-
-        // createjs.Ticker.addEventListener("tick", handleTick);
-        // function handleTick(e){
-        //     console.log({e})
-        //     stage.canvas.width = stage.canvas.clientWidth;
-        //     stage.canvas.height = stage.canvas.clientHeight;
-
-        //     if(typeof stage.scene.update == 'function') stage.scene.update({stage});
-
-        //     stage.update();
-        // }
-
-        // scene1();
-        // var stage = Scene1.init();
         var stage = scene1();
     </script>
 </body>
