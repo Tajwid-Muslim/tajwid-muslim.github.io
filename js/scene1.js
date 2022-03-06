@@ -86,9 +86,8 @@ function scene1(stages){
     btnBuku.name = 'buku';
     btnBuku.addEventListener('click', function(e){
         stop();
-        stage.removeAllChildren();
-        // stage.clear();
-        // stage.visible = false;
+        stage.enableDOMEvents(false);
+        stage.canvas = null;
         window.stage = scene2();
     });
     stage.addChild(btnBuku);
