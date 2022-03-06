@@ -30,6 +30,7 @@
             height: 100vh;
             width: 100%;
             max-width: calc(100vh * 360 / 640);
+            background: black;
         }
     </style>
 
@@ -40,7 +41,11 @@
     <canvas id="canvas" class="potrait"></canvas>
     <script src="/js/utils.js"></script>
     <script src="/js/scene1.js"></script>
+    <script src="/js/scene2.js"></script>
     <script>
+        // var stages = {};
+        // stages["scene1"] = scene1(stages);
+        // stages["scene2"] = scene2(stages);
         window.stage = scene1();
     </script>
 </body>

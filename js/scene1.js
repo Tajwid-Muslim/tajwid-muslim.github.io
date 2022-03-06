@@ -1,3 +1,42 @@
+function ButtonWood(label, rotation){
+    var con = new createjs.Container();
+    
+    var text = new createjs.Text(label, "bold 32px 'Comic Neue'", "#ffffff");
+    var bounds = text.getBounds();
+    text.name = 'label';
+
+    var wood = new createjs.Shape();
+    wood.name = 'wood';
+    wood.graphics.setStrokeStyle(4).beginStroke("#FFFFFF")
+                 .beginFill('#563232').drawRoundRect(0,0,183,59,8);
+    
+    con.addChild(wood, text);
+    con.rotation = rotation;
+    con.regX = 183/2;
+    con.regY = 59/2;
+
+    con.updateLabel = function(label){
+        text.text = label;
+        text.setTransform((183 - bounds.width + 5) / 2, (59 - bounds.height + 5) / 2);
+    }
+
+    function rot0(e){
+        con.rotation = 0;
+    }
+
+    function rot(e){
+        con.rotation = rotation;
+    }
+
+    con.updateLabel(label);
+
+    con.addEventListener('mouseover', rot0);
+    con.addEventListener('mousedown', rot0);
+    con.addEventListener('mouseout', rot);
+    
+    return con;
+}
+
 function scene1_mainkan(){
     var conMainkan = new createjs.Container();
 
@@ -16,7 +55,7 @@ function scene1_mainkan(){
     return conMainkan;
 }
 
-function scene1(){
+function scene1(stages){
     var stage = new createjs.Stage("canvas");
     stage.enableMouseOver();
 
@@ -47,6 +86,9 @@ function scene1(){
     btnBuku.name = 'buku';
     btnBuku.addEventListener('click', function(e){
         stop();
+        stage.removeAllChildren();
+        // stage.clear();
+        // stage.visible = false;
         window.stage = scene2();
     });
     stage.addChild(btnBuku);
