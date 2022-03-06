@@ -44,7 +44,7 @@ function scene1_mainkan(){
     bgMainkan.graphics.beginFill("rgba(255,255,255,0.5)").drawRect(0,0,360,640);
     conMainkan.addChild(bgMainkan);
 
-    var close = new createjs.Bitmap("/assets/scene1/close.png");
+    var close = new createjs.Bitmap("assets/scene1/close.png");
     close.name = 'close';
     close.setTransform(16,16,0.5,0.5);
     close.addEventListener('click', function(e){
@@ -61,7 +61,7 @@ function scene1(stages){
 
     // ##### ASSET CREATION ###########################################
 
-    var bg = new createjs.Bitmap("/assets/scene1/background.png");
+    var bg = new createjs.Bitmap("assets/scene1/background.png");
     bg.name = "bg";
     stage.addChild(bg);
 

@@ -30,7 +30,7 @@ function scene2(){
 
     // ##### ASSET CREATION ##########################################
 
-    var bg = new createjs.Bitmap("/assets/scene2/background.png");
+    var bg = new createjs.Bitmap("assets/scene2/background.png");
     bg.name = "bg";
     stage.addChild(bg);
 
