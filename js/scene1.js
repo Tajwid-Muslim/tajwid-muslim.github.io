@@ -39,6 +39,10 @@ function ButtonWood(label, rotation){
 
 function scene1_mainkan(){
     var conMainkan = new createjs.Container();
+    conMainkan.addEventListener('click', (e)=>{});
+    conMainkan.addEventListener('mouseover', (e)=>{});
+    conMainkan.addEventListener('mousedown', (e)=>{});
+    conMainkan.addEventListener('mouseout', (e)=>{});
 
     var bgMainkan = new createjs.Shape();
     bgMainkan.graphics.beginFill("rgba(255,255,255,0.5)").drawRect(0,0,360,640);

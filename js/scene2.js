@@ -24,7 +24,10 @@ function ButtonColor(label, color){
 
 function scene2_materi(name){
     var conMateri = new createjs.Container();
-    console.log(conMateri);
+    conMateri.addEventListener('click', (e)=>{});
+    conMateri.addEventListener('mouseover', (e)=>{});
+    conMateri.addEventListener('mousedown', (e)=>{});
+    conMateri.addEventListener('mouseout', (e)=>{});
 
     var back = new createjs.Bitmap(`assets/scene2/back.png`);
     back.name = "back";
