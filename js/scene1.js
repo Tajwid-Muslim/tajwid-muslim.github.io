@@ -37,6 +37,24 @@ function ButtonWood(label, rotation){
     return con;
 }
 
+function scene1_mainkan_game(label, image){
+    var conImg = new createjs.Container();
+
+    var icon = new createjs.Bitmap(image);
+    icon.name = "icon";
+
+    var text = new createjs.Text(label, "bold 56px 'Comic Neue'", "#000000");
+    var bounds = text.getBounds();
+    text.name = 'label';
+    text.regX = bounds.width / 2;
+    text.x = 300 / 2;
+    text.y = 300 + 16;
+
+    conImg.addChild(icon, text);
+
+    return conImg;
+}
+
 function scene1_mainkan(){
     var conMainkan = new createjs.Container();
     conMainkan.addEventListener('click', (e)=>{});
@@ -55,6 +73,32 @@ function scene1_mainkan(){
         conMainkan.parent.removeChild(conMainkan);
     });
     conMainkan.addChild(close);
+
+    var conGames = new createjs.Container();
+    conGames.name = 'container';
+    conGames.regX = 
+    conGames.regY = (300 + 96) * 0.3;
+    conGames.x = 360 / 2;
+    conGames.y = 640 / 2;
+    conMainkan.addChild(conGames);
+
+    var btnTamuDrop = scene1_mainkan_game('Tamu Drop', 'assets/scene1/TamuDrop.png');
+    btnTamuDrop.scale = 0.3;
+
+    var btnConnect = scene1_mainkan_game('Connect', 'assets/scene1/Connect.png');
+    btnConnect.scale = 0.3;
+    btnConnect.x = (300 + 96) * 0.3;
+
+    var btnCatJump = scene1_mainkan_game('Cat Jump', 'assets/scene1/CatJump.png');
+    btnCatJump.scale = 0.3;
+    btnCatJump.y = (300 + 96) * 0.3;
+
+    var btnGoalQuest = scene1_mainkan_game('Goal Quest', 'assets/scene1/GoalQuest.png');
+    btnGoalQuest.scale = 0.3;
+    btnGoalQuest.x = (300 + 96) * 0.3;
+    btnGoalQuest.y = (300 + 96) * 0.3;
+
+    conGames.addChild(btnTamuDrop, btnConnect, btnCatJump, btnGoalQuest);
 
     return conMainkan;
 }
