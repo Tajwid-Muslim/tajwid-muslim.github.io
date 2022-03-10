@@ -84,6 +84,12 @@ function scene1_mainkan({stage, stop}){
 
     var btnTamuDrop = scene1_mainkan_game('Tamu Drop', 'assets/scene1/TamuDrop.png');
     btnTamuDrop.scale = 0.3;
+    btnTamuDrop.addEventListener('click', function(e){
+        stop();
+        stage.enableDOMEvents(false);
+        stage.canvas = null;
+        window.stage = scene3();
+    });
 
     var btnConnect = scene1_mainkan_game('Connect', 'assets/scene1/Connect.png');
     btnConnect.scale = 0.3;

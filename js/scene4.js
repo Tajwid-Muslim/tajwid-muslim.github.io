@@ -1,5 +1,5 @@
 function uniqueNumber(a, b){
-    var x = math.range(0, 5).toArray();
+    var x = math.range(a, b).toArray();
 
     return function(){
         var i = math.randomInt(0, x.length);
@@ -8,7 +8,7 @@ function uniqueNumber(a, b){
     }
 }
 
-function scene4_tiles(){
+function scene4_tiles({finish}){
     var con = new createjs.Container();
 
     var coors = [ // [j,i]
@@ -34,20 +34,24 @@ function scene4_tiles(){
     var colors = [];
     var tiles = [];
 
+    var unique = uniqueNumber(0, 5);
+
+    var magnet = [0,0];
     for(i=0; i<5; i++){
         if(typeof tiles[i] == 'undefined') tiles[i] = [];
-        colors.push(chroma.random().hex());
         
-        var keys = Object.keys(icons)[math.randomInt(0, 5)];
+        var keys = Object.keys(icons)[unique()];
         var color = icons[keys][0];
-        var icon = icons[keys][Math.randomInt(1, icons[keys].length)];
-        // colors.push([keys, color, icon]);
+        var icon = icons[keys][math.randomInt(1, icons[keys].length)];
+        colors.push([keys, color, icon]);
 
         for(j=0; j<5; j++){
             tiles[i][j] = new createjs.Shape();
             tiles[i][j].graphics
                 .setStrokeStyle(4).beginStroke("#222222")
                 .beginFill('#000000').drawRect(j * 360 / 5, i * 360 / 5, 360 / 5, 360 / 5);
+            tiles[i][j].addEventListener('mouseover', fillLine);
+            tiles[i][j].addEventListener('pressup', endLine);
             con.addChild(tiles[i][j]);
         }
     }
@@ -59,22 +63,47 @@ function scene4_tiles(){
         var b = tile[i][1];
 
         var _tile = Object.assign({}, tiles[a[1]][a[0]].graphics.command);
-        tiles[a[1]][a[0]].graphics.clear();
-        tiles[a[1]][a[0]].graphics.beginFill(color)
-            .drawRect(_tile.x, _tile.y, _tile.w, _tile.h);
+        tiles[a[1]][a[0]].parent.removeChild(tiles[a[1]][a[0]]);
+        tiles[a[1]][a[0]] = new createjs.Bitmap(`assets/Tajwid/${color[0]}/${color[2]}`);
+        tiles[a[1]][a[0]].x = _tile.x;
+        tiles[a[1]][a[0]].y = _tile.y;
+        tiles[a[1]][a[0]].scale = 0.018;
+        con.addChild(tiles[a[1]][a[0]]);
         
         tiles[a[1]][a[0]].color = color;
         tiles[a[1]][a[0]].coor = tile[i];
         tiles[a[1]][a[0]].target = b;
 
-        _tile = Object.assign({}, tiles[b[1]][b[0]].graphics.command);
-        tiles[b[1]][b[0]].graphics.clear();
-        tiles[b[1]][b[0]].graphics.beginFill(color)
-            .drawRect(_tile.x, _tile.y, _tile.w, _tile.h);
+        var _tile = Object.assign({}, tiles[b[1]][b[0]].graphics.command);
+        tiles[b[1]][b[0]].parent.removeChild(tiles[b[1]][b[0]]);
+        tiles[b[1]][b[0]] = new createjs.Bitmap(`assets/Tajwid/${color[0]}/${color[2]}`);
+        tiles[b[1]][b[0]].x = _tile.x;
+        tiles[b[1]][b[0]].y = _tile.y;
+        tiles[b[1]][b[0]].scale = 0.018;
+        tiles[b[1]][b[0]].addEventListener('mousedown', startLine);
+        tiles[b[1]][b[0]].addEventListener('pressup', endLine);
+        con.addChild(tiles[b[1]][b[0]]);
         
         tiles[b[1]][b[0]].color = color;
         tiles[b[1]][b[0]].coor = tile[i];
         tiles[b[1]][b[0]].target = a;
+    }
+
+    var g = null, pressed = false;
+
+    function startLine(e){
+        pressed = true;
+        console.log({startLine: e});
+    }
+
+    function fillLine(e){
+        if(pressed == true)
+            console.log({fillLine: e});
+    }
+
+    function endLine(e){
+        pressed = false;
+        console.log({endLine: e});
     }
 
     con.coor = tile;
@@ -88,6 +117,7 @@ function scene4_tiles(){
 function scene4(){
     var stage = new createjs.Stage("canvas");
     stage.enableMouseOver();
+    stage.enableDOMEvents();
 
     // ##### ASSET CREATION ##########################################
 
@@ -113,13 +143,18 @@ function scene4(){
     prog.graphics.beginFill("#56C90D").drawRect(0,64,360 * 40 / 60,216);
     stage.addChild(prog);
 
-    var tiles = scene4_tiles();
+    var tiles = scene4_tiles({finish: tileFinish});
     tiles.setTransform(0, 280);
     stage.addChild(tiles);
 
     // ##### ACTION REGISTER #########################################
 
     createjs.Ticker.addEventListener("tick", update);
+
+    function tileFinish(){
+        // addTime
+        // generateNewTile
+    }
 
     function update(){
         updateResolution(stage);
