@@ -52,38 +52,38 @@ function scene4(){
     var stage = new createjs.Stage("canvas");
     stage.enableMouseOver();
 
-    var main = new createjs.Container();
-    main.name = 'main';
-    main.setBounds(0,0,360,640);
-    stage.addChild(main);
+    // var main = new createjs.Container();
+    // main.name = 'main';
+    // main.setBounds(0,0,360,640);
+    // stage.addChild(main);
 
     // ##### ASSET CREATION ##########################################
 
     var bg = new createjs.Shape();
     bg.graphics.beginFill("#000000").drawRect(0,0,360,640);
-    main.addChild(bg);
+    stage.addChild(bg);
 
     var pause = new createjs.Bitmap("assets/pause.png");
     pause.name = "pause";
     pause.setTransform(16,16 - 4);
-    main.addChild(pause);
+    stage.addChild(pause);
 
     var poin = new createjs.Text('P9999', "bold 32px 'Comic Neue'", "#ffffff");
     poin.name = 'poin';
     poin.setTransform(16 + 40 + 16, 16 + 2);
-    main.addChild(poin);
+    stage.addChild(poin);
 
     var bgProg = new createjs.Shape();
     bgProg.graphics.beginFill("#222222").drawRect(0,64,360,216);
-    main.addChild(bgProg);
+    stage.addChild(bgProg);
 
     var prog = new createjs.Shape();
     prog.graphics.beginFill("#56C90D").drawRect(0,64,360 * 40 / 60,216);
-    main.addChild(prog);
+    stage.addChild(prog);
 
     var tiles = scene4_tiles();
     tiles.setTransform(0, 280);
-    main.addChild(tiles);
+    stage.addChild(tiles);
 
     // ##### ACTION REGISTER #########################################
 
@@ -92,7 +92,7 @@ function scene4(){
     function update(){
         updateResolution(stage);
 
-        main.scale = stage.canvas.height / 640;
+        stage.scale = stage.canvas.height / 640;
     
         stage.update();
     }
