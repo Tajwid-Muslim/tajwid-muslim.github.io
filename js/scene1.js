@@ -55,7 +55,7 @@ function scene1_mainkan_game(label, image){
     return conImg;
 }
 
-function scene1_mainkan(){
+function scene1_mainkan({stage, stop}){
     var conMainkan = new createjs.Container();
     conMainkan.addEventListener('click', (e)=>{});
     conMainkan.addEventListener('mouseover', (e)=>{});
@@ -66,7 +66,7 @@ function scene1_mainkan(){
     bgMainkan.graphics.beginFill("rgba(255,255,255,0.5)").drawRect(0,0,360,640);
     conMainkan.addChild(bgMainkan);
 
-    var close = new createjs.Bitmap("assets/scene1/close.png");
+    var close = new createjs.Bitmap("assets/close.png");
     close.name = 'close';
     close.setTransform(16,16,0.5,0.5);
     close.addEventListener('click', function(e){
@@ -88,6 +88,12 @@ function scene1_mainkan(){
     var btnConnect = scene1_mainkan_game('Connect', 'assets/scene1/Connect.png');
     btnConnect.scale = 0.3;
     btnConnect.x = (300 + 96) * 0.3;
+    btnConnect.addEventListener('click', function(e){
+        stop();
+        stage.enableDOMEvents(false);
+        stage.canvas = null;
+        window.stage = scene4();
+    });
 
     var btnCatJump = scene1_mainkan_game('Cat Jump', 'assets/scene1/CatJump.png');
     btnCatJump.scale = 0.3;
@@ -123,7 +129,7 @@ function scene1(stages){
     var btnMainkan = ButtonWood('Mainkan', -2);
     btnMainkan.name = 'mainkan';
     btnMainkan.addEventListener('click', function(e){
-        var conMainkan = scene1_mainkan();
+        var conMainkan = scene1_mainkan({stop, stage});
         conMainkan.name = 'stage_mainkan';
         conMainkan.scale = bg.scale;
         stage.addChild(conMainkan);
