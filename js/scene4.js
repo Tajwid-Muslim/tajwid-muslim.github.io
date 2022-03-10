@@ -11,38 +11,75 @@ function uniqueNumber(a, b){
 function scene4_tiles(){
     var con = new createjs.Container();
 
-    var rCA = uniqueNumber();
-    var rA = uniqueNumber();
-    var rCB = uniqueNumber();
-    var rB = uniqueNumber();
+    var coors = [ // [j,i]
+        [ [[0,0],[4,2]], [[0,1],[1,3]], [[1,1],[0,4]], [[2,1],[3,2]], [[3,4],[4,4]] ],
+        [ [[0,2],[1,1]], [[2,0],[4,0]], [[1,2],[3,1]], [[0,3],[3,2]], [[4,1],[0,4]] ],
+        [ [[0,1],[4,0]], [[1,1],[1,3]], [[0,4],[2,2]], [[4,1],[4,4]], [[1,4],[3,4]] ],
+        [ [[0,4],[1,2]], [[2,2],[4,0]], [[1,3],[3,1]], [[4,1],[4,3]], [[1,4],[4,4]] ],
+        [ [[0,0],[3,0]], [[4,0],[1,2]], [[0,3],[3,1]], [[0,4],[3,3]], [[4,3],[2,4]] ],
+        [ [[0,0],[3,1]], [[1,0],[3,0]], [[4,0],[4,4]], [[0,2],[3,3]], [[2,3],[3,4]] ],
+    ];
+
+    var icons = {
+        "Idgham Bigunnah": ["#753e04", "Mim!.png", "Nun!.png", "Wau!.png", "Yaa!.png"],
+        "Idgham Bilagunnah": ["#ff8400", "Lam!.png", "Ra!.png"],
+        "Idzhar": ["#2a8b0c", "Ain!.png", "Alif!.png", "Ghain!.png", "ha!.png", "Hamzah!.png",
+                              "Hha!.png", "Kha!.png"],
+        "Ikhfa": ["#ffdb14", "Dal.png", "Dhad.png", "Dzal.png", "Dzha.png", "Fa!.png", "Jim!.png",
+                             "Kaf!.png", "Qaf!.png", "Shad!.png", "Sin!.png", "Syin!.png", "Ta!.png", 
+                             "Tha!.png", "Tsa!.png", "Zain!.png"],
+        "Iqlab": ["#164906", "Ba.png"],
+    };
 
     var colors = [];
-    var a = [];
-    var b = [];
+    var tiles = [];
 
     for(i=0; i<5; i++){
+        if(typeof tiles[i] == 'undefined') tiles[i] = [];
         colors.push(chroma.random().hex());
-        a.push([rA(), rCA()]);
-        var t = rB();
-        b.push([t, rCB()]);
-        if(i > 0 && b[i-1][0] == a[i-1][0]){
-            console.log([i, b[i-1][0], a[i-1][0]]);
-            var z = b[i-1][0];
-            b[i-1][0] = b[i][0];
-            b[i][0] = z;
-        }
-    }
+        
+        var keys = Object.keys(icons)[math.randomInt(0, 5)];
+        var color = icons[keys][0];
+        var icon = icons[keys][Math.randomInt(1, icons[keys].length)];
+        // colors.push([keys, color, icon]);
 
-    console.log({colors, a, b});
-
-    for(i=0; i<5; i++){
         for(j=0; j<5; j++){
-            var tile = new createjs.Shape();
-            var color = j == a[i][0] ? colors[a[i][1]] : j == b[i][0] ? colors[b[i][1]] : '#000000';
-            tile.graphics.beginFill(color).drawRect(j * 360 / 5,i * 360 / 5,360 / 5,360 / 5);
-            con.addChild(tile);
+            tiles[i][j] = new createjs.Shape();
+            tiles[i][j].graphics
+                .setStrokeStyle(4).beginStroke("#222222")
+                .beginFill('#000000').drawRect(j * 360 / 5, i * 360 / 5, 360 / 5, 360 / 5);
+            con.addChild(tiles[i][j]);
         }
     }
+
+    var tile = coors[math.randomInt(0, coors.length)];
+    for(i=0; i<tile.length; i++){
+        var color = colors[i];
+        var a = tile[i][0];
+        var b = tile[i][1];
+
+        var _tile = Object.assign({}, tiles[a[1]][a[0]].graphics.command);
+        tiles[a[1]][a[0]].graphics.clear();
+        tiles[a[1]][a[0]].graphics.beginFill(color)
+            .drawRect(_tile.x, _tile.y, _tile.w, _tile.h);
+        
+        tiles[a[1]][a[0]].color = color;
+        tiles[a[1]][a[0]].coor = tile[i];
+        tiles[a[1]][a[0]].target = b;
+
+        _tile = Object.assign({}, tiles[b[1]][b[0]].graphics.command);
+        tiles[b[1]][b[0]].graphics.clear();
+        tiles[b[1]][b[0]].graphics.beginFill(color)
+            .drawRect(_tile.x, _tile.y, _tile.w, _tile.h);
+        
+        tiles[b[1]][b[0]].color = color;
+        tiles[b[1]][b[0]].coor = tile[i];
+        tiles[b[1]][b[0]].target = a;
+    }
+
+    con.coor = tile;
+    con.colors = colors;
+    con.tiles = tiles;
 
     return con;
 }
