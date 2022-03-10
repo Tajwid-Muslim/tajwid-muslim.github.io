@@ -52,11 +52,6 @@ function scene4(){
     var stage = new createjs.Stage("canvas");
     stage.enableMouseOver();
 
-    // var main = new createjs.Container();
-    // main.name = 'main';
-    // main.setBounds(0,0,360,640);
-    // stage.addChild(main);
-
     // ##### ASSET CREATION ##########################################
 
     var bg = new createjs.Shape();
