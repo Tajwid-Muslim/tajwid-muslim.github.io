@@ -1,27 +1,3 @@
-function ButtonColor(label, color){
-    var con = new createjs.Container();
-
-    var text = new createjs.Text(label, "bold 24px 'Comic Neue'", "#ffffff");
-    text.name = 'label';
-
-    var bg = new createjs.Shape();
-    bg.name = 'bg';
-    bg.graphics.setStrokeStyle(4).beginFill(color)
-                 .drawRect(0,0,248,56);
-
-    con.addChild(bg, text);
-
-    con.updateLabel = function(label){
-        text.text = label;
-        var bounds = text.getBounds();
-        text.setTransform((248 - bounds.width + 5) / 2, (56 - bounds.height + 5) / 2);
-    }
-
-    con.updateLabel(label);
-
-    return con;
-}
-
 function scene2_materi(name){
     var conMateri = new createjs.Container();
     conMateri.addEventListener('click', (e)=>{});

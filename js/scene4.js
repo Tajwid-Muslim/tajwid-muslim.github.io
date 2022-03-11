@@ -1,13 +1,3 @@
-function uniqueNumber(a, b){
-    var x = math.range(a, b).toArray();
-
-    return function(){
-        var i = math.randomInt(0, x.length);
-        var y = x.splice(i, 1);
-        return y[0]
-    }
-}
-
 function scene4_tiles({finish}){
     var con = new createjs.Container();
 

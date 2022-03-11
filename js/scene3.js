@@ -1,59 +1,3 @@
-function generateIcon(){
-    var icons = {
-        "Idgham Bigunnah": ["#753e04", "Mim!.png", "Nun!.png", "Wau!.png", "Yaa!.png"],
-        "Idgham Bilagunnah": ["#ff8400", "Lam!.png", "Ra!.png"],
-        "Idzhar": ["#2a8b0c", "Ain!.png", "Alif!.png", "Ghain!.png", "ha!.png", "Hamzah!.png",
-                              "Hha!.png", "Kha!.png"],
-        "Ikhfa": ["#ffdb14", "Dal.png", "Dhad.png", "Dzal.png", "Dzha.png", "Fa!.png", "Jim!.png",
-                             "Kaf!.png", "Qaf!.png", "Shad!.png", "Sin!.png", "Syin!.png", "Ta!.png", 
-                             "Tha!.png", "Tsa!.png", "Zain!.png"],
-        "Iqlab": ["#164906", "Ba.png"],
-    };
-
-    var key = Object.keys(icons)[math.randomInt(0, 5)];
-    var color = icons[key][0];
-    var icon = icons[key][math.randomInt(1, icons[key].length)];
-
-    var objIcon = new createjs.Bitmap(`assets/Tajwid/${key}/${icon}`);
-    objIcon.scale = 0.015;
-    objIcon.key = key;
-    objIcon.color = color;
-    objIcon.icon = icon;
-
-    return objIcon;
-}
-
-function Label(label, color){
-    var con = new createjs.Container();
-
-    var text = new createjs.Text(label, "bold 14px 'Comic Neue'", color);
-    text.name = 'label';
-
-    var bg = new createjs.Shape();
-    bg.name = 'bg';
-    bg.graphics.setStrokeStyle(2).beginStroke(color).beginFill('#000000')
-                 .drawRect(0,0,96,24);
-
-    con.addChild(bg, text);
-
-    con.updateLabel = function(label){
-        text.text = label;
-        var bounds = text.getBounds();
-        text.setTransform((96 - bounds.width + 5) / 2, (24 - bounds.height + 5) / 2);
-    }
-
-    con.updateLabel(label);
-
-    return con;
-}
-
-function ProgressBar(val){
-    var shape = new createjs.Shape();
-    shape.graphics.beginFill('#56C90D').drawRoundRectComplex(0,0, 144 * val,40, 8,0,0,8 ).endFill();
-    shape.graphics.beginStroke('#ffffff').setStrokeStyle(4).drawRoundRect(0,0,144,40,8).endStroke();
-    return shape;
-}
-
 function scene3(){
     var stage = new createjs.Stage("canvas");
     stage.enableMouseOver();
@@ -70,6 +14,7 @@ function scene3(){
                              "Tha!.png", "Tsa!.png", "Zain!.png"],
         "Iqlab": ["#164906", "Ba.png"],
     };
+    var statePause = false;
 
     // ##### ASSET CREATION ##########################################
 
@@ -80,6 +25,23 @@ function scene3(){
     var pause = new createjs.Bitmap("assets/pause.png");
     pause.name = "pause";
     pause.setTransform(16,16 - 4);
+    pause.addEventListener('click', function(e){
+        statePause = true;
+
+        var pauseScreen = PauseScreen({
+            name: 'Tamu Drop',
+            score: poin,
+            highScore: localStorage.scene3_poin,
+            conti,
+            back,
+            restart
+        });
+        pauseScreen.regX = 280 / 2;
+        pauseScreen.x = 360 / 2;
+        pauseScreen.regY = 300 / 2;
+        pauseScreen.y = 640 / 2;
+        stage.addChild(pauseScreen);
+    });
     stage.addChild(pause);
 
     var t = (2 * 60) + 30;
@@ -130,9 +92,10 @@ function scene3(){
 
     var isPressed = false;
     var icons = [];
-    var lastTime = 0;
+    var lastTime = -1;
     var bonusTime = (2 * 60) + 30;
     var time = 0;
+    var isEnd = false;
 
     function pressDown(e){
         isPressed = true;
@@ -148,10 +111,33 @@ function scene3(){
         isPressed = false;
     }
 
+    function conti(e){
+        //
+    }
+
+    function back(e){
+        stop();
+        stage.enableDOMEvents(false);
+        stage.canvas = null;
+        window.stage = scene1();
+    }
+
+    function restart(e){
+        stop();
+        stage.enableDOMEvents(false);
+        stage.canvas = null;
+        window.stage = scene3();
+    }
+
     function updateGame(e){
         time = Math.floor(e.time / 1000);
+        if(lastTime == -1){
+            bonusTime += time;
+            lastTime = 0;
+        }
+
         if(time % 4 == 0 && time != lastTime){
-            icons.push(generateIcon());
+            icons.push(generateIcon(true));
             icons[icons.length - 1].x = math.random(0, 360 - (0.015 * 3937));
             stage.addChild(icons[icons.length - 1]);
             lastTime = time;
@@ -172,7 +158,7 @@ function scene3(){
                 }else if((icons[i].y < 640 && icons[i].key != key)
                       || (icons[i].y > 640 && icons[i].key == key)){
                     bonusTime -= 10;
-                    poin -= 1;
+                    poin = poin <= 0 ? 0 : poin - 1;
                     txtPoin.text = 'P' + poin;
                 }
 
@@ -187,10 +173,29 @@ function scene3(){
 
         stage.scale = stage.canvas.height / 640;
 
-        if(bonusTime - time > 0) updateGame(e);
-        else{
+        if(bonusTime - time > 0 && statePause == false) updateGame(e);
+        else if(isEnd == false){
             if(typeof localStorage.scene3_poin == 'undefined' || poin > localStorage.scene3_poin)
                 localStorage.scene3_poin = poin;
+            
+            var endScreen = EndScreen({
+                name: 'Tamu Drop',
+                score: poin,
+                highScore: localStorage.scene3_poin,
+                back,
+                restart
+            });
+            endScreen.regX = 280 / 2;
+            endScreen.x = 360 / 2;
+            endScreen.regY = 300 / 2;
+            endScreen.y = 640 / 2;
+            stage.addChild(endScreen);
+            isEnd = true;
+        }
+
+        if(statePause){
+            if(Math.floor(e.time / 1000) != lastTime) bonusTime++;
+            lastTime = Math.floor(e.time / 1000);
         }
 
         stage.update();
