@@ -139,13 +139,23 @@ function PauseScreen({name, highScore, conti, restart, back}){
 
     var bg = new createjs.Shape();
     bg.graphics.beginFill('#563232').beginStroke('#ffffff').setStrokeStyle(4)
-               .drawRoundRect(0,0,280,300,8);
+               .drawRoundRect(0,0,280,300,8).endFill().endStroke();
     con.addChild(bg);
 
     var textName = new createjs.Text(name, "bold 32px 'Comic Neue'", '#ffffff');
     var bName = textName.getBounds();
-    textName.setTransform((280 - bName.width + 5) / 2, 18);
+    textName.setTransform(24, 18);
     con.addChild(textName);
+
+    var close = new createjs.Bitmap(`assets/close.png`);
+    close.x = 226;
+    close.y = 16;
+    close.scale = 0.6
+    close.addEventListener('click', function(e){
+        conti(e);
+        con.parent.removeChild(con);
+    });
+    con.addChild(close);
 
     var textHScore = new createjs.Text(highScore, "bold 64px 'Comic Neue'", '#ffffff');
     var bHScore = textHScore.getBounds();

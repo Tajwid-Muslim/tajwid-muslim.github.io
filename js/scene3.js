@@ -112,7 +112,7 @@ function scene3(){
     }
 
     function conti(e){
-        //
+        statePause = false;
     }
 
     function back(e){
@@ -174,7 +174,7 @@ function scene3(){
         stage.scale = stage.canvas.height / 640;
 
         if(bonusTime - time > 0 && statePause == false) updateGame(e);
-        else if(isEnd == false){
+        else if(isEnd == false && statePause == false){
             if(typeof localStorage.scene3_poin == 'undefined' || poin > localStorage.scene3_poin)
                 localStorage.scene3_poin = poin;
             
