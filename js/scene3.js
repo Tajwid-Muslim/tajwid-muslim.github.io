@@ -32,7 +32,7 @@ function scene3(){
         var pauseScreen = PauseScreen({
             name: 'Tamu Drop',
             score: poin,
-            highScore: localStorage.scene3_poin,
+            highScore: localStorage.scene3_poin ?? 0,
             conti,
             back,
             restart
@@ -142,7 +142,7 @@ function scene3(){
             lastTime = 0;
         }
 
-        if(time % 10 == 0 && time != lastTime){
+        if(time % 5 == 0 && time != lastTime){
             icons.push(generateIcon(true));
             icons[icons.length - 1].x = math.random(0, scalingWidth(stage) - (0.015 * 3937));
             stage.addChild(icons[icons.length - 1]);
@@ -150,11 +150,6 @@ function scene3(){
         }
 
         updateTimer(bonusTime - time);
-
-        // if(icons.length >= 1){
-        //     var tes = conBucket.globalToLocal(icons[0].x * stage.scale, (icons[0].y + 5) * stage.scale);
-        //     console.log([conBucket.hitTest(tes.x, tes.y), tes.x, tes.y]);
-        // }
 
         for(i=0; i<icons.length; i++){
             icons[i].y += 5;
