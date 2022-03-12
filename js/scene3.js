@@ -1,6 +1,7 @@
 function scene3(){
     var stage = new createjs.Stage("canvas");
     stage.enableMouseOver();
+    createjs.Touch.enable(stage);
 
     // CONFIGURATION
 
@@ -37,7 +38,7 @@ function scene3(){
             restart
         });
         pauseScreen.regX = 280 / 2;
-        pauseScreen.x = 360 / 2;
+        pauseScreen.x = scalingWidth(stage) / 2;
         pauseScreen.regY = 300 / 2;
         pauseScreen.y = 640 / 2;
         stage.addChild(pauseScreen);
@@ -64,6 +65,7 @@ function scene3(){
 
     var conBucket = new createjs.Container();
     stage.addChild(conBucket);
+    console.log(conBucket);
 
     var bucket = new createjs.Bitmap("assets/scene3/bucket.png");
     bucket.name = "bucket";
@@ -76,7 +78,6 @@ function scene3(){
     text.y = 28;
     conBucket.addChild(text);
     key = key.substr(0,3) == 'Id ' ? 'Idgham ' + key.slice(3) : key;
-    console.log(key);
     
     conBucket.y = 567;
     conBucket.regX = 106 / 2;
@@ -102,8 +103,11 @@ function scene3(){
     }
 
     function mousemove(e){
+        // var pos = conBucket.globalToLocal(e.stageX, e.stageY)
+        // if(conBucket.hitTest(pos.x, pos.y))
+        //     console.log([conBucket.hitTest(pos.x, pos.y), e.stageX, e.rawX, stage.scale]);
         if(isPressed){
-            conBucket.x = e.stageX;
+            conBucket.x = e.stageX / stage.scale;
         }
     }
 
@@ -118,6 +122,7 @@ function scene3(){
     function back(e){
         stop();
         stage.enableDOMEvents(false);
+        stage.enableMouseOver(false);
         stage.canvas = null;
         window.stage = scene1();
     }
@@ -136,18 +141,23 @@ function scene3(){
             lastTime = 0;
         }
 
-        if(time % 4 == 0 && time != lastTime){
+        if(time % 10 == 0 && time != lastTime){
             icons.push(generateIcon(true));
-            icons[icons.length - 1].x = math.random(0, 360 - (0.015 * 3937));
+            icons[icons.length - 1].x = math.random(0, scalingWidth(stage) - (0.015 * 3937));
             stage.addChild(icons[icons.length - 1]);
             lastTime = time;
         }
 
         updateTimer(bonusTime - time);
 
+        // if(icons.length >= 1){
+        //     var tes = conBucket.globalToLocal(icons[0].x * stage.scale, (icons[0].y + 5) * stage.scale);
+        //     console.log([conBucket.hitTest(tes.x, tes.y), tes.x, tes.y]);
+        // }
+
         for(i=0; i<icons.length; i++){
             icons[i].y += 5;
-            var pos = conBucket.globalToLocal(icons[i].x, icons[i].y + (0.015 * 3937 / 2));
+            var pos = conBucket.globalToLocal(icons[i].x * stage.scale, ((icons[i].y + (60 / 2)) * stage.scale));
             if(icons[i].y > 640 || conBucket.hitTest(pos.x, pos.y)){
                 if((icons[i].y < 640 && icons[i].key == key)
                    || (icons[i].y > 640 && icons[i].key != key)){

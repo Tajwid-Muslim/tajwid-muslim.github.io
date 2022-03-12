@@ -48,6 +48,7 @@ function scene1_mainkan({stage, stop}){
     btnTamuDrop.addEventListener('click', function(e){
         stop();
         stage.enableDOMEvents(false);
+        stage.enableMouseOver(false);
         stage.canvas = null;
         window.stage = scene3();
     });

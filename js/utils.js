@@ -145,6 +145,9 @@ function PauseScreen({name, highScore, conti, restart, back}){
     var textName = new createjs.Text(name, "bold 32px 'Comic Neue'", '#ffffff');
     var bName = textName.getBounds();
     textName.setTransform(24, 18);
+    textName.addEventListener('click', function(e){
+        openFullscreen();
+    });
     con.addChild(textName);
 
     var close = new createjs.Bitmap(`assets/close.png`);
@@ -283,4 +286,8 @@ function closeFullscreen() {
         /* IE11 */
         document.msExitFullscreen();
     }
+}
+
+function scalingWidth(stage){
+    return 640 * stage.canvas.width / stage.canvas.height;
 }
