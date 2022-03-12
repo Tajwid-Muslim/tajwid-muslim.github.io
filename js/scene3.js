@@ -31,7 +31,6 @@ function scene3(){
 
         var pauseScreen = PauseScreen({
             name: 'Tamu Drop',
-            score: poin,
             highScore: localStorage.scene3_poin ?? 0,
             conti,
             back,

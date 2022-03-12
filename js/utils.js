@@ -161,13 +161,13 @@ function PauseScreen({name, highScore, conti, restart, back}){
     con.addChild(close);
 
     var textHScore = new createjs.Text(highScore, "bold 64px 'Comic Neue'", '#ffffff');
-    var bHScore = null // textHScore.getBounds();
+    var bHScore = textHScore.getBounds();
     if(bHScore != null) textHScore.setTransform((280 - bHScore.width + 5) / 2, 92);
     else textHScore.setTransform(24, 92);
     con.addChild(textHScore);
 
     var textLHScore = new createjs.Text('Skor tertinggi', "bold 24px 'Comic Neue'", '#ffffff');
-    var bLHScore = null // textLHScore.getBounds();
+    var bLHScore = textLHScore.getBounds();
     if(bLHScore != null) textLHScore.setTransform((280 - bLHScore.width + 5) / 2, 156);
     else textLHScore.setTransform(24, 156);
     con.addChild(textLHScore);
