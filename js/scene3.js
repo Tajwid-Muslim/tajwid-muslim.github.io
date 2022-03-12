@@ -122,6 +122,7 @@ function scene3(){
         stop();
         stage.enableDOMEvents(false);
         stage.enableMouseOver(false);
+        createjs.Touch.disable(stage);
         stage.canvas = null;
         window.stage = scene1();
     }
