@@ -130,6 +130,7 @@ function scene3(){
     function restart(e){
         stop();
         stage.enableDOMEvents(false);
+        stage.enableMouseOver(false);
         stage.canvas = null;
         window.stage = scene3();
     }
