@@ -3,7 +3,7 @@ function scene3(){
     stage.enableMouseOver();
     createjs.Touch.enable(stage);
 
-    // CONFIGURATION
+    // ##### CONFIGURATION ##########################################
 
     var list = {
         "Id Bigunnah": ["#753e04", "Mim!.png", "Nun!.png", "Wau!.png", "Yaa!.png"],
@@ -131,6 +131,7 @@ function scene3(){
         stop();
         stage.enableDOMEvents(false);
         stage.enableMouseOver(false);
+        createjs.Touch.disable(stage);
         stage.canvas = null;
         window.stage = scene3();
     }

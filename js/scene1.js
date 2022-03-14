@@ -67,6 +67,13 @@ function scene1_mainkan({stage, stop}){
     var btnCatJump = scene1_mainkan_game('Cat Jump', 'assets/scene1/CatJump.png');
     btnCatJump.scale = 0.3;
     btnCatJump.y = (300 + 96) * 0.3;
+    btnCatJump.addEventListener('click', function(e){
+        stop();
+        stage.enableDOMEvents(false);
+        stage.enableMouseOver(false);
+        stage.canvas = null;
+        window.stage = scene5();
+    });
 
     var btnGoalQuest = scene1_mainkan_game('Goal Quest', 'assets/scene1/GoalQuest.png');
     btnGoalQuest.scale = 0.3;
@@ -110,6 +117,7 @@ function scene1(stages){
     btnBuku.addEventListener('click', function(e){
         stop();
         stage.enableDOMEvents(false);
+        stage.enableMouseOver(false);
         stage.canvas = null;
         window.stage = scene2();
     });
