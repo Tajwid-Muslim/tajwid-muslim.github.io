@@ -86,7 +86,7 @@ function generateIcon(unique=false){
         if(rand == false){
             window._uniqueGenerateIcon = uniqueNumber(0, 5);
             rand = window._uniqueGenerateIcon();
-            console.log("regenerate");
+            // console.log("regenerate");
         }
     }
 

@@ -33,6 +33,7 @@ function scene5(){
     var pheight = 100; // platform height
     var vplatform = 1; // velocity of platform 
     var platforms = [];
+    var tamus = [];
 
     var time = 0;
     var frame = -1;
@@ -49,11 +50,18 @@ function scene5(){
             platforms.push(pf);
             stage.addChild(pf);
 
+            if(math.randomInt(1, 25) % 3 == 0){
+                var icon = generateIcon(true);
+                icon.x = pf.x + ((80.66 - (icon.scale * 3937)) / 2);
+                icon.y = y - (icon.scale * 3937);
+                tamus.push(icon);
+                stage.addChild(icon);
+            }
+
             if(platforms.length == 3){
                 cat.y = ycat = y + (stage.scale * 5);
                 cat.x = pf.x + (80.66 / 2);
             }
-            // console.log(`init: ${y} || ${cheight % 640}`);
     }
 
     cheight = 640;
@@ -69,12 +77,10 @@ function scene5(){
 
         if(gm < 0) moveLeft(-gm * 2 * bg.scale / 45);
         else moveRight(gm * 2 * bg.scale / 45);
-
-        console.log("hehe");
     }
 
     function hdlkey(e){
-        console.log(e);
+        // console.log(e);
         if(e.key == "ArrowLeft") moveLeft(2 * bg.scale);
         else if(e.key == "ArrowRight") moveRight(2 * bg.scale);
     }
@@ -99,15 +105,19 @@ function scene5(){
     }
 
     function updateStage(e){
-        time = e.time / 1000;
-        // document.title = time;
-
         if(cheight % pheight == 0){
             var y = (640 % pheight);
             var pf = scene5_platform(stage, y);
             platforms.push(pf);
             stage.addChild(pf);
-            // console.log(`update: ${y} || ${cheight % 640}`);
+
+            if(math.randomInt(1, 25) % 3 == 0){
+                var icon = generateIcon(true);
+                icon.x = pf.x + ((80.66 - (icon.scale * 3937)) / 2);
+                icon.y = y - (icon.scale * 3937);
+                tamus.push(icon);
+                stage.addChild(icon);
+            }
         }
 
         var t = frame - cfrm;
@@ -116,24 +126,38 @@ function scene5(){
 
         for(i=0; i<platforms.length; i++){
             platforms[i].y+=vplatform;
+            if(tamus.length - 1 >= i) tamus[i].y+=vplatform; 
 
             if(vt < 0){
-                // console.log("Line 87");
                 var pos = platforms[i].globalToLocal(cat.x, cat.y);
-                // if(platforms[i].hitTest(pos.x, pos.y)){
                 if(isPass(cat.x, cat.y, 
                           platforms[i].x, platforms[i].x + (80.66 * stage.scale), 
                           platforms[i].y, platforms[i].y + (27.34 * stage.scale))){
                     ycat = platforms[i].y;
                     cfrm = frame;
-                    // stop()
                 }
 
+                if(tamus.length - 1 >= i 
+                   && isPass(cat.x, cat.y, 
+                             tamus[i].x, tamus[i].x + (3937 * tamus[i].scale * stage.scale),
+                             tamus[i].y, tamus[i].y + (3937 * tamus[i].scale * stage.scale))){
+                    var sapi = new SpeechSynthesisUtterance(tamus[i].key);
+                    sapi.lang = 'id-id';
+                    speechSynthesis.speak(sapi);
+                    tamus[i].parent.removeChild(tamus[i]);
+                    tamus.splice(i,1);
+                    // console.log("Line 145");
+                }
             }
 
-            if(platforms[i] >= 640){
+            if(platforms[i].y >= 640){
                 platforms[i].parent.removeChild(platforms[i]);
                 platforms.shift();
+            }
+
+            if(tamus.length - 1 >= i && tamus[i].y >= 640){
+                tamus[i].parent.removeChild(tamus[i]);
+                tamus.shift();
             }
         }
 
@@ -148,7 +172,7 @@ function scene5(){
         if(cat.y < 640) updateStage(e);
         else {
             restart();
-            console.log('restart');
+            // console.log('restart');
         }
     
         stage.update();
@@ -161,7 +185,6 @@ function scene5(){
         document.removeEventListener('keypress', hdlkey);
         document.removeEventListener('keydown', hdlkey);
         window.removeEventListener('deviceorientation', hdldevor);
-        // createjs.Touch.disable(stage);
     }
 
     return {
