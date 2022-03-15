@@ -11,13 +11,53 @@ function scene5(){
 
     // ##### CONFIGURATION ##########################################
 
-    // add configuration here
+    var statePause = false;
+    var t = (2 * 60) + 30;
 
     // ##### ASSET CREATION ##########################################
 
     var bg = new createjs.Bitmap("assets/scene5/background.png");
     bg.name = "bg";
     stage.addChild(bg);
+
+    var pause = new createjs.Bitmap("assets/pause.png");
+    pause.name = "pause";
+    pause.setTransform(16,16 - 4);
+    pause.addEventListener('click', function(e){
+        statePause = true;
+        t = t + lastTime - time;
+
+        var pauseScreen = PauseScreen({
+            name: 'Cat Jump',
+            highScore: localStorage.scene5_poin ?? 0,
+            conti,
+            back,
+            restart
+        });
+        pauseScreen.regX = 280 / 2;
+        pauseScreen.x = scalingWidth(stage) / 2;
+        pauseScreen.regY = 300 / 2;
+        pauseScreen.y = 640 / 2;
+        stage.addChild(pauseScreen);
+    });
+    stage.addChild(pause);
+
+    var timer = null;
+    function updateTimer(time){
+        if(timer != null) timer.parent.removeChild(timer);
+        timer = ProgressBar(time / ((2 * 60) + 30));
+        timer.x = 66;
+        timer.y = 13;
+        stage.addChild(timer);
+    }
+
+    updateTimer(t);
+
+    var poin = 0;
+    var txtPoin = new createjs.Text('P0', "bold 32px 'Comic Neue'", '#000000');
+    txtPoin.x = 226;
+    txtPoin.y = 14 + 4;
+    stage.addChild(txtPoin);
 
     var cat = new createjs.Bitmap("assets/scene5/cat.png");
     cat.name = 'cat';
@@ -36,6 +76,7 @@ function scene5(){
     var tamus = [];
 
     var time = 0;
+    var lastTime = -1;
     var frame = -1;
     var cfrm = 0;
     var g = 0.6 * stage.scale;
@@ -80,7 +121,6 @@ function scene5(){
     }
 
     function hdlkey(e){
-        // console.log(e);
         if(e.key == "ArrowLeft") moveLeft(2 * bg.scale);
         else if(e.key == "ArrowRight") moveRight(2 * bg.scale);
     }
@@ -98,6 +138,17 @@ function scene5(){
         if(cat.x < 0 * stage.scale) cat.x = 360 * stage.scale;
     }
 
+    function conti(e){
+        statePause = false;
+        lastTime = time;
+    }
+
+    function back(e){
+        stop();
+        stage.canvas = null;
+        window.stage = scene1();
+    }
+
     function restart(e){
         stop();
         stage.canvas = null;
@@ -105,6 +156,10 @@ function scene5(){
     }
 
     function updateStage(e){
+        if(lastTime == -1){
+            lastTime += time;
+        }
+
         if(cheight % pheight == 0){
             var y = (640 % pheight);
             var pf = scene5_platform(stage, y);
@@ -120,9 +175,9 @@ function scene5(){
             }
         }
 
-        var t = frame - cfrm;
-        var vt = vcat - (g * t);
-        cat.y = ycat - ((vcat * t) - (g * t * t / 2));
+        var f = frame - cfrm;
+        var vt = vcat - (g * f);
+        cat.y = ycat - ((vcat * f) - (g * f * f / 2));
 
         for(i=0; i<platforms.length; i++){
             platforms[i].y+=vplatform;
@@ -144,9 +199,11 @@ function scene5(){
                     var sapi = new SpeechSynthesisUtterance(tamus[i].key);
                     sapi.lang = 'id-id';
                     speechSynthesis.speak(sapi);
+                    t += 5;
+                    poin += 1;
+                    txtPoin.text = 'P' + poin;
                     tamus[i].parent.removeChild(tamus[i]);
                     tamus.splice(i,1);
-                    // console.log("Line 145");
                 }
             }
 
@@ -156,6 +213,9 @@ function scene5(){
             }
 
             if(tamus.length - 1 >= i && tamus[i].y >= 640){
+                t -= 10;
+                poin = poin <= 0 ? 0 : poin - 1;
+                txtPoin.text = 'P' + poin;
                 tamus[i].parent.removeChild(tamus[i]);
                 tamus.shift();
             }
@@ -163,16 +223,34 @@ function scene5(){
 
         cheight+=vplatform;
         frame++;
+        updateTimer(t + lastTime - time);
     }
 
     function update(e){
+        time = Math.floor(e.time / 1000);
         updateResolution(stage);
         stage.scale = stage.canvas.height / 640;
 
-        if(cat.y < 640) updateStage(e);
-        else {
-            restart();
-            // console.log('restart');
+        if(cat.y < 640){
+            if(statePause == false) updateStage(e);
+        }else{
+            if(typeof localStorage.scene5_poin == 'undefined' || poin > localStorage.scene5_poin)
+                localStorage.scene5_poin = poin;
+            
+            var endScreen = EndScreen({
+                name: 'Cat Jump',
+                score: poin,
+                highScore: localStorage.scene5_poin,
+                back,
+                restart
+            });
+            endScreen.regX = 280 / 2;
+            endScreen.x = 360 / 2;
+            endScreen.regY = 300 / 2;
+            endScreen.y = 640 / 2;
+            stage.addChild(endScreen);
+            isEnd = true;
+            statePause = true;
         }
     
         stage.update();
