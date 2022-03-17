@@ -172,20 +172,20 @@ function scene6(){
         function mouseMove(emm){
             var pos = ball.globalToLocal(emm.stageX, emm.stageY);
             if(!ball.hitTest(pos.x, pos.y) && emm.stageY < epd.stageY){
-                var x = (403 - epd.stageY) * (emm.stageX - epd.stageX) / (emm.stageY - epd.stageY);
-                x += epd.stageX;
+                var x = (403 - (epd.stageY / stage.scale)) * (emm.stageX - epd.stageX) / (emm.stageY - epd.stageY);
+                x += epd.stageX / stage.scale;
                 var tw = throwBall(x,403);
                 pressUp(emm);
                 tw.addEventListener('complete', function(){
                     var anss = [ans1, ans2, ans3];
                     var ans = anss[q[1]];
-                    var pos = ans.globalToLocal(ball.x, ball.y);
+                    var pos = ans.globalToLocal(ball.x * stage.scale, ball.y * stage.scale);
                     var tans;
 
                     if(ans.hitTest(pos.x, pos.y)){
                         tans = bigBoxText(q[2][q[1]], "32px", "rgba(0,255,0,0.6)", 99.33, 117);
                         poin += 1;
-                        console.log([t, (2 * 60) + 30, t >= (2 * 60) + 30, (t >= (2 * 60) + 30) ? 0 : 5]);
+                        // console.log([t, (2 * 60) + 30, t >= (2 * 60) + 30, (t >= (2 * 60) + 30) ? 0 : 5]);
                         if(t + lastTime - time + 5 < (2 * 60) + 30) t += 5;
                         txtPoin.text = `P${poin}`;
                     }else{
