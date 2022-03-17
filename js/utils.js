@@ -297,3 +297,30 @@ function closeFullscreen() {
 function scalingWidth(stage){
     return 640 * stage.canvas.width / stage.canvas.height;
 }
+
+function playMusic(name, stop=true, loop=true){
+    if(createjs.Sound.isReady()){
+        if(stop) createjs.Sound.stop();
+        createjs.Sound.play(name, {loop:loop?-1:0});
+    }else{
+        createjs.Sound.registerSound("assets/sounds/scene1.mpeg", "scene1");
+        createjs.Sound.registerSound("assets/sounds/scene3.mpeg", "scene3");
+        createjs.Sound.registerSound("assets/sounds/scene5.mpeg", "scene5");
+        createjs.Sound.registerSound("assets/sounds/scene6.mpeg", "scene6");
+        createjs.Sound.registerSound("assets/sounds/jump.mpeg", "jump");
+        createjs.Sound.registerSound("assets/sounds/lose.mpeg", "lose");
+
+        createjs.Sound.on("fileload", onFileLoad);
+    }
+
+    function onFileLoad(e){
+        playMusic(name);
+        createjs.Sound.off("fileload", onFileLoad);
+        createjs.Sound.off("fileerror", onFileError);
+    }
+
+    function onFileError(e){
+        playMusic(name);
+        createjs.Sound.off("fileerror", onFileError);
+    }
+}

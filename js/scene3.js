@@ -88,6 +88,7 @@ function scene3(){
 
     // ##### ACTION REGISTER #########################################
 
+    playMusic("scene3");
     createjs.Ticker.addEventListener("tick", update);
 
     var isPressed = false;
@@ -198,6 +199,8 @@ function scene3(){
             endScreen.y = 640 / 2;
             stage.addChild(endScreen);
             isEnd = true;
+
+            playMusic("lose", true, false);
         }
 
         if(statePause){

@@ -137,6 +137,7 @@ function scene1(stages){
 
     // ##### ACTION REGISTER #########################################
 
+    playMusic("scene1");
     createjs.Ticker.addEventListener("tick", update);
 
     function update(){

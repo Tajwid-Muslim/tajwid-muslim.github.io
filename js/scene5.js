@@ -67,6 +67,7 @@ function scene5(){
 
     // ##### ACTION REGISTER #########################################
 
+    playMusic("scene5");
     createjs.Ticker.addEventListener("tick", update);
 
     var cheight = 1; // current height
@@ -190,6 +191,7 @@ function scene5(){
                           platforms[i].y, platforms[i].y + (27.34 * stage.scale))){
                     ycat = platforms[i].y;
                     cfrm = frame;
+                    playMusic("jump", false, false);
                 }
 
                 if(tamus.length - 1 >= i 
@@ -231,7 +233,7 @@ function scene5(){
         updateResolution(stage);
         stage.scale = stage.canvas.height / 640;
 
-        if(cat.y < 640 || t + lastTime - time > 0){
+        if(cat.y < 640 && t + lastTime - time > 0){
             if(statePause == false) updateStage(e);
         }else{
             if(typeof localStorage.scene5_poin == 'undefined' || poin > localStorage.scene5_poin)
@@ -251,6 +253,8 @@ function scene5(){
             stage.addChild(endScreen);
             isEnd = true;
             statePause = true;
+
+            playMusic("lose", true, false);
         }
     
         stage.update();

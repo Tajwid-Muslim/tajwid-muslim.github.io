@@ -152,6 +152,7 @@ function scene6(){
 
     // ##### ACTION REGISTER #########################################
 
+    playMusic("scene6");
     createjs.Ticker.addEventListener("tick", update);
 
     function throwBall(x, y){
@@ -262,6 +263,8 @@ function scene6(){
             stage.addChild(endScreen);
             isEnd = true;
             statePause = true;
+
+            playMusic("lose", true, false);
         }
     
         stage.update();
