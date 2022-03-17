@@ -1,0 +1,21 @@
+{
+    "name": "Tajwid Muslim",
+    "short_name": "Tamu",
+    "description": "Tajwid Muslim merupakan game untuk belajar Tajwid",
+    "icons": [
+      {
+        "src": "assets/logo.png",
+        "sizes": "32x32",
+        "type": "image/png"
+      },
+      {
+        "src": "assets/logo.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ],
+    "start_url": "index.html",
+    "display": "fullscreen",
+    "theme_color": "#575756",
+    "background_color": "#575756"
+}

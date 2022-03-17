@@ -79,6 +79,13 @@ function scene1_mainkan({stage, stop}){
     btnGoalQuest.scale = 0.3;
     btnGoalQuest.x = (300 + 96) * 0.3;
     btnGoalQuest.y = (300 + 96) * 0.3;
+    btnGoalQuest.addEventListener('click', function(e){
+        stop();
+        stage.enableDOMEvents(false);
+        stage.enableMouseOver(false);
+        stage.canvas = null;
+        window.stage = scene6();
+    });
 
     conGames.addChild(btnTamuDrop, btnConnect, btnCatJump, btnGoalQuest);
 

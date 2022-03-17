@@ -1,3 +1,7 @@
+// ##### CONFIGURATION #########################
+
+createjs.MotionGuidePlugin.install();
+
 // ##### ASSETS #########################
 
 function ButtonWood(label, rotation){
