@@ -299,6 +299,16 @@ function scalingWidth(stage){
 }
 
 function playMusic(name, stop=true, loop=true){
+    function onFileLoad(e){
+        if(e.id == name) playMusic(name);
+        createjs.Sound.off("fileload", onFileLoad);
+    }
+
+    function onFileError(e){
+        playMusic(name);
+        createjs.Sound.off("fileerror", onFileError);
+    }
+
     if(createjs.Sound.isReady()){
         if(stop) createjs.Sound.stop();
         createjs.Sound.play(name, {loop:loop?-1:0});
@@ -311,16 +321,6 @@ function playMusic(name, stop=true, loop=true){
         createjs.Sound.registerSound("assets/sounds/lose.mpeg", "lose");
 
         createjs.Sound.on("fileload", onFileLoad);
-    }
-
-    function onFileLoad(e){
-        playMusic(name);
-        createjs.Sound.off("fileload", onFileLoad);
-        createjs.Sound.off("fileerror", onFileError);
-    }
-
-    function onFileError(e){
-        playMusic(name);
-        createjs.Sound.off("fileerror", onFileError);
+        createjs.Sound.on("fileerror", onFileError);
     }
 }
