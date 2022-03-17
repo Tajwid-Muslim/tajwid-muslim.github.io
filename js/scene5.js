@@ -231,7 +231,7 @@ function scene5(){
         updateResolution(stage);
         stage.scale = stage.canvas.height / 640;
 
-        if(cat.y < 640){
+        if(cat.y < 640 || t + lastTime - time > 0){
             if(statePause == false) updateStage(e);
         }else{
             if(typeof localStorage.scene5_poin == 'undefined' || poin > localStorage.scene5_poin)
