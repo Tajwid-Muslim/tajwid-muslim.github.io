@@ -46,7 +46,7 @@ function scene2(){
     conBtn.regX = 248 / 2;
     conBtn.regY = ((56 * 6) + (56 / 2)) / 2;
 
-    var btnIdzhar = ButtonColor("Idzhar", "#7ED958");
+    var btnIdzhar = ButtonColor("Idzhar Khalqi", "#7ED958");
     var btnIdBigunnah = ButtonColor("Idgham Bigunnah", "#AD4516");
     var btnIdBilagunnah = ButtonColor("Idgham Bilagunnah", "#FE9E02");
     var btnIqlab = ButtonColor("Iqlab", "#2980B9");
