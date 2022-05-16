@@ -137,6 +137,17 @@ function scene1(stages){
     btnKeluar.addEventListener('click', window.close);
     stage.addChild(btnKeluar);
 
+    var btnCredits = ButtonWood('Credits', 0);
+    btnCredits.name = 'credits';
+    btnCredits.addEventListener('click', function(e){
+        stop();
+        stage.enableDOMEvents(false);
+        stage.enableMouseOver(false);
+        stage.canvas = null;
+        window.stage = scene7();
+    });
+    stage.addChild(btnCredits);
+
     // ##### ACTION REGISTER #########################################
 
     playMusic("scene1");
@@ -168,6 +179,11 @@ function scene1(stages){
                              stage.canvas.height - wood_h + (250 * bg.scale),
                              bg.scale, bg.scale, btnKeluar.rotation, 0, 0,
                              btnKeluar.regX, btnKeluar.regY);
+        
+        btnCredits.setTransform(20,
+                             20,
+                             bg.scale * 0.5, bg.scale * 0.5, btnCredits.rotation, 0, 0,
+                             0, 0);
 
         stage.update();
     }
